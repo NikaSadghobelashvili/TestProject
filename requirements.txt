@@ -1,38 +1,15 @@
+# Recipe Sharing Platform - Django project
 
-Recipe Sharing Platform - aucileblad gasaketebeli
-
-1. Create a virtual environment:
-    python -m venv venv
-    
-    venv\Scripts\activate
-   
-2. Install dependencies:
-    pip install -r requirements.txt
-
-3. Run migrations to create database:
-   python manage.py makemigrations
-   python manage.py migrate
-
-4. Create a superuser(tavidanve ubralod erti useri rom arsebobdes):
-   python manage.py create_superuser
-   (Default: admin@example.com / admin123)
-
- 5. Create sample data (this is the managment command to create random data in database):
-   python manage.py create_categories
-    python manage.py create_sample_recipes
-
-6. Run the development server:
-   python manage.py runserver
-   Then open: http://127.0.0.1:8000/
- 7. Run tests:
-   pytest -v
-
-
- DEPENDENCIES:
-
+# Django web framework
 Django>=4.2.0
+
+# Image handling
 Pillow>=10.0.0
+
+# Testing
 pytest>=7.4.0
 pytest-django>=4.5.2
 pytest-cov>=4.1.0
 
+# Production server
+gunicorn>=21.2.0
