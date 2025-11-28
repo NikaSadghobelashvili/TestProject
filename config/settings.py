@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-change-this-in-production-!@#$%^&*()'
 DEBUG = False
 
 # Allowed hosts (replace with your Render domain)
-ALLOWED_HOSTS = ['testproject-4-uvhw.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['testproject-7-ymr1.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
