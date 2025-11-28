@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipes - Recipe Sharing{% endblock %}
+
+{% block content %}
+<div class="hero-section mb-4">
+    <div class="container">
+        <h1><i class="bi bi-journal-text"></i> Recipe Collection</h1>
+        <p>Discover amazing recipes from our community</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <form method="get" class="d-flex shadow-sm rounded p-3 bg-white">
+            <input type="text" name="search" class="form-control me-2" placeholder="🔍 Search recipes by name, ingredients, or description..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Search
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card sticky-top" style="top: 20px;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-tags"></i> Categories</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'recipes:home' %}" class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
+                    <i class="bi bi-grid"></i> All Categories
+                </a>
+                {% for category in categories %}
+                <a href="?category={{ category.slug }}" class="list-group-item list-group-item-action {% if selected_category == category.slug %}active{% endif %}">
+                    <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% if recipes %}
+        <div class="row">
+            {% for recipe in recipes %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 recipe-card">
+                    {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="height: 250px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-gradient" style="height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="bi bi-image"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-2">
+                            {% if recipe.category %}
+                            <span class="badge bg-primary mb-2">{{ recipe.category.name }}</span>
+                            {% endif %}
+                            <span class="badge difficulty-{{ recipe.difficulty_level|lower }}">{{ recipe.difficulty_level }}</span>
+                        </div>
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ recipe.description|truncatewords:20 }}</p>
+                        <div class="d-flex align-items-center gap-3 mb-3 text-muted small">
+                            <span><i class="bi bi-clock"></i> {{ recipe.cooking_time }} min</span>
+                            <span><i class="bi bi-person"></i> {{ recipe.author.get_full_name|default:recipe.author.email|truncatewords:1 }}</span>
+                        </div>
+                        <a href="{% url 'recipes:detail' recipe.pk %}" class="btn btn-primary">
+                            <i class="bi bi-eye"></i> View Recipe
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h3>No recipes found</h3>
+            <p>{% if user.is_authenticated %}<a href="{% url 'recipes:create' %}" class="btn btn-primary mt-3">Create the first one!</a>{% else %}Please login to create recipes.{% endif %}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
